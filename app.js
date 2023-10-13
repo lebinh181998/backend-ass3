@@ -1,0 +1,74 @@
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const session = require("express-session");
+const MongoDBSession = require("connect-mongodb-session")(session);
+const mongoose = require("mongoose");
+const path = require("path");
+const User = require("./models/user");
+
+const app = express();
+
+const MONGO_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.iewp9yb.mongodb.net/${process.env.MONGO_DATABASE}`;
+
+const store = new MongoDBSession({
+  uri: MONGO_URI,
+  collection: "sessions",
+});
+
+app.use(cors());
+app.set("trust proxy", 1);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+
+app.use(
+  session({
+    secret: "ecommerceapp",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
+);
+
+app.use("/images", express.static(path.join(__dirname, "images")));
+
+app.use(async (req, res, next) => {
+  if (req.session.user) {
+    const user = await User.findById(req.session.user._id);
+    req.user = user;
+  }
+  next();
+});
+
+//routers
+const authRouter = require("./routers/auth");
+const productRouter = require("./routers/product");
+const orderRouter = require("./routers/order");
+const userRouter = require("./routers/user");
+const adminRouter = require("./routers/admin");
+app.use("/admin", adminRouter);
+app.use(authRouter);
+app.use(productRouter);
+app.use(orderRouter);
+app.use(userRouter);
+
+app.use((error, req, res, next) => {
+  console.log(error);
+  res.status(500).json({ status: false, message: "Error server" });
+});
+
+const PORT = process.env.PORT || 5000;
+
+mongoose
+  .connect(MONGO_URI)
+  .then(() => {
+    const server = app.listen(PORT);
+    const io = require("./socket/socket").init(server);
+    const { socketON } = require("./socket/socket-action");
+    console.log("connected db");
+    io.on("connection", (socket) => {
+      // console.log("listenned socket");
+      socketON(socket, "messages");
+    });
+  })
+  .catch((err) => console.log(err));
