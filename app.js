@@ -16,7 +16,11 @@ const store = new MongoDBSession({
   collection: "sessions",
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [process.env.CORS_CLIENT_URL, process.env.CORS_ADMIN_URL],
+  })
+);
 app.set("trust proxy", 1);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
@@ -27,6 +31,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: store,
+    cookie: {
+      secure: process.env.COOKIE_SECURE,
+      sameSite: process.env.COOKIE_SAMESITE,
+    },
   })
 );
 
