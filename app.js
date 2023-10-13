@@ -8,7 +8,13 @@ const path = require("path");
 const User = require("./models/user");
 
 const app = express();
-console.log(process.env);
+console.log(process.env.MONGO_USER);
+console.log(process.env.MONGO_PASSWORD);
+console.log(process.env.MONGO_DATABASE);
+console.log(process.env.CORS_CLIENT_URL);
+console.log(process.env.CORS_ADMIN_URL);
+console.log(process.env.COOKIE_SECURE);
+console.log(process.env.COOKIE_SAMESITE);
 const MONGO_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.iewp9yb.mongodb.net/${process.env.MONGO_DATABASE}`;
 
 const store = new MongoDBSession({
