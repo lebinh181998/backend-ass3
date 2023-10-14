@@ -25,10 +25,10 @@ const store = new MongoDBSession({
 app.use(
   cors({
     origin: [process.env.CORS_CLIENT_URL, process.env.CORS_ADMIN_URL],
-    methods: ["GET,POST,PUT,PATH,DELETE,OPTIONS"],
-    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATH", "DELETE", "OPTIONS"],
   })
 );
+
 app.set("trust proxy", 1);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
@@ -38,12 +38,11 @@ app.use(
     secret: "ecommerceapp",
     resave: false,
     saveUninitialized: false,
-    store: store,
     cookie: {
       secure: true, //false cho localhost
       sameSite: "none",
-      httpOnly: false,
     },
+    store: store,
   })
 );
 
