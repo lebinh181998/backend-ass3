@@ -15,6 +15,7 @@ console.log(process.env.CORS_CLIENT_URL);
 console.log(process.env.CORS_ADMIN_URL);
 console.log(process.env.COOKIE_SECURE);
 console.log(process.env.COOKIE_SAMESITE);
+
 const MONGO_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.iewp9yb.mongodb.net/${process.env.MONGO_DATABASE}`;
 
 const store = new MongoDBSession({
@@ -71,6 +72,11 @@ app.use(userRouter);
 app.use((error, req, res, next) => {
   console.log(error);
   res.status(500).json({ status: false, message: "Error server" });
+});
+
+app.use(express.static(__dirname));
+app.get("/*", function (req, res) {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 const PORT = process.env.PORT || 5000;
