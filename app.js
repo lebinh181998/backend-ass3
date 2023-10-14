@@ -27,6 +27,7 @@ app.use(
   cors({
     origin: [process.env.CORS_CLIENT_URL, process.env.CORS_ADMIN_URL],
     methods: ["GET", "POST", "PUT", "PATH", "DELETE", "OPTIONS"],
+    credentials: true,
   })
 );
 
@@ -42,6 +43,7 @@ app.use(
       secure: true, //false cho localhost
       sameSite: "none",
       httpOnly: false,
+      maxAge: 60 * 60 * 1000,
     },
     store: store,
   })
