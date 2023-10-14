@@ -41,6 +41,7 @@ app.use(
     cookie: {
       secure: true, //false cho localhost
       sameSite: "none",
+      httpOnly: false,
     },
     store: store,
   })
