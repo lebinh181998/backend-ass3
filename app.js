@@ -26,6 +26,7 @@ app.use(
   cors({
     origin: [process.env.CORS_CLIENT_URL, process.env.CORS_ADMIN_URL],
     methods: ["GET,POST,PUT,PATH,DELETE,OPTIONS"],
+    credentials: true,
   })
 );
 app.set("trust proxy", 1);
