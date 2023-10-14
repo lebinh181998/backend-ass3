@@ -39,9 +39,9 @@ app.use(
     saveUninitialized: false,
     store: store,
     cookie: {
-      secure: process.env.COOKIE_SECURE,
-      sameSite: process.env.COOKIE_SAMESITE,
-      httpOnly: false,
+      secure: true, //false cho localhost
+      sameSite: "none",
+      // httpOnly: false,
     },
   })
 );
