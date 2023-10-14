@@ -25,6 +25,7 @@ const store = new MongoDBSession({
 app.use(
   cors({
     origin: [process.env.CORS_CLIENT_URL, process.env.CORS_ADMIN_URL],
+    methods: ["GET,POST,PUT,PATH,DELETE,OPTIONS"],
   })
 );
 app.set("trust proxy", 1);
@@ -40,6 +41,7 @@ app.use(
     cookie: {
       secure: process.env.COOKIE_SECURE,
       sameSite: process.env.COOKIE_SAMESITE,
+      httpOnly: false,
     },
   })
 );

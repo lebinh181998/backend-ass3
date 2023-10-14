@@ -97,6 +97,7 @@ exports.checkLogin = async (req, res, next) => {
 //check admin
 exports.checkAdmin = async (req, res, next) => {
   try {
+    console.log("controller");
     if (req.user) {
       if (req.user.role === "Admin") {
         return res.status(200).json({ status: true, user: req.user });
