@@ -21,6 +21,7 @@ const store = new MongoDBSession({
   uri: MONGO_URI,
   collection: "sessions",
 });
+app.set("trust proxy", 1);
 
 app.use(
   cors({
@@ -29,7 +30,6 @@ app.use(
   })
 );
 
-app.set("trust proxy", 1);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 
