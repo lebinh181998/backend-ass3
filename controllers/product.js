@@ -168,6 +168,8 @@ exports.updateProduct = async (req, res, next) => {
       );
     }
 
+    console.log(deleteImages, productImages);
+
     const countImages = productImages.length + images.length;
     //kiểm tra image
     //<=0 || >4: thêm lỗi image
@@ -193,7 +195,7 @@ exports.updateProduct = async (req, res, next) => {
     }
     //lưu images vào database
     if (images.length > 0) {
-      const mergeImages = [...images, ...productImages];
+      const mergeImages = [...productImages, ...images];
       mergeImages[0]
         ? (product.img1 = mergeImages[0].path
             ? mergeImages[0].path
