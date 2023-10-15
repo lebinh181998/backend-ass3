@@ -139,7 +139,11 @@ exports.createOrder = async (req, res, next) => {
                   `<tr key=${item.product._id}>
                   <td class="fw-bold text-dark fs-6">${item.product.name}</td>
                   <td>
-                    <img src=${item.product.img1} alt=${item.product.name} />
+                    <img src=${
+                      validURL(item.product.img1)
+                        ? item.product.img1
+                        : `https://backend-ass3.onrender.com/${item.product.img1}`
+                    } alt=${item.product.name} />
                   </td>
                   <td class="text-end">${Dot(item.product.price)} VND</td>
                   <td>${item.quantity}</td>
@@ -221,4 +225,17 @@ const Dot = (value) => {
     }
   }
   return price.join("");
+};
+
+const validURL = (str) => {
+  var pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // fragment locator
+  return !!pattern.test(str);
 };
