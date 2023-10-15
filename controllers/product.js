@@ -168,8 +168,6 @@ exports.updateProduct = async (req, res, next) => {
       );
     }
 
-    console.log(deleteImages, productImages);
-
     const countImages = productImages.length + images.length;
     //kiểm tra image
     //<=0 || >4: thêm lỗi image
@@ -219,6 +217,15 @@ exports.updateProduct = async (req, res, next) => {
             ? mergeImages[3].path
             : mergeImages[3])
         : (product.img4 = "");
+    } else {
+      const mergeImages = [...productImages];
+      mergeImages[0] ? (product.img1 = mergeImages[0]) : (product.img1 = "");
+
+      mergeImages[1] ? (product.img2 = mergeImages[1]) : (product.img2 = "");
+
+      mergeImages[2] ? (product.img3 = mergeImages[2]) : (product.img3 = "");
+
+      mergeImages[3] ? (product.img4 = mergeImages[3]) : (product.img4 = "");
     }
     product.name = body.name;
     product.price = body.price;
